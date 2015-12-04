@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"time"
 )
 
 const APIBaseURL = "https://mandrillapp.com/api/1.0/"
@@ -116,6 +117,19 @@ func (a *apiError) Error() error {
 	}
 }
 
+func FromMandrillTime(s string) (time.Time, error) {
+	return time.Parse("2006-01-02 15:04:05", s)
+
+}
+
+func ToMandrillTime(t time.Time) string {
+	return t.UTC().Format("2006-01-02 15:04:05")
+}
+
 func (m *Mandrill) Users() *Users {
 	return &Users{m}
+}
+
+func (m *Mandrill) Messages() *Messages {
+	return &Messages{m}
 }
