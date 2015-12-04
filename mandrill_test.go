@@ -11,16 +11,16 @@ import (
 )
 
 var TestAPIKey string
-var TestFrom string
+var TestFromEmail string
 
 func TestMain(m *testing.M) {
 	flag.StringVar(&TestAPIKey, "apikey", "", "Valid Mandrill API Key")
-	flag.StringVar(&TestDomain, "from", "", "Email address from an SPF + DKIM signed domain")
+	flag.StringVar(&TestFromEmail, "from", "", "Email address from an SPF + DKIM signed domain")
 	flag.Parse()
 	if TestAPIKey == "" {
 		fmt.Fprint(os.Stdout, `Please set -apikey="XYZ" flag`)
 		os.Exit(1)
-	} else if TestFrom == "" {
+	} else if TestFromEmail == "" {
 		fmt.Fprint(os.Stdout, `Please set -from="example@domain.com" flag`)
 		os.Exit(1)
 	}
