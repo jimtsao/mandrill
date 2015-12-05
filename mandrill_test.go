@@ -56,6 +56,7 @@ func TestErrValidation(t *testing.T) {
 
 func TestFromMandrillTime(t *testing.T) {
 	t1, err := FromMandrillTime("2015-12-04 12:15:30")
+	t1 = t1.UTC()
 	if err != nil ||
 		t1.Year() != 2015 || t1.Month() != time.December || t1.Day() != 4 ||
 		t1.Hour() != 12 || t1.Minute() != 15 || t1.Second() != 30 {
