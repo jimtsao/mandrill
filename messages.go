@@ -7,7 +7,7 @@ import (
 )
 
 type Messages struct {
-	*Mandrill
+	m *Mandrill
 }
 
 func (m *Messages) Send(message *Message, async bool, ipPool string, sendAt *time.Time) ([]SendResponse, error) {
@@ -31,8 +31,8 @@ func (m *Messages) Send(message *Message, async bool, ipPool string, sendAt *tim
 		// If you specify a pool that does not exist, your default pool will be used instead.
 		IPPool string `json:"ip_pool,omitempty"`
 		SendAt string `json:"send_at,omitempty"`
-	}{m.APIKey, message, async, ipPool, tsend}
-	resp, err := m.execute("/messages/send.json", data)
+	}{m.m.APIKey, message, async, ipPool, tsend}
+	resp, err := m.m.execute("/messages/send.json", data)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (m *Messages) Send(message *Message, async bool, ipPool string, sendAt *tim
 	return ret, nil
 }
 
-func (m *Mandrill) SimpleSend(from string, to string, subject string, body string) (SendResponse, error) {
+func (m *Messages) SimpleSend(from string, to string, subject string, body string) (SendResponse, error) {
 	msg := &Message{
 		FromEmail: from,
 		To:        []Recipient{{Email: to}},
@@ -56,8 +56,8 @@ func (m *Mandrill) SimpleSend(from string, to string, subject string, body strin
 	data := struct {
 		APIKey  string   `json:"key"`
 		Message *Message `json:"message"`
-	}{m.APIKey, msg}
-	resp, err := m.execute("/messages/send.json", data)
+	}{m.m.APIKey, msg}
+	resp, err := m.m.execute("/messages/send.json", data)
 	if err != nil {
 		return SendResponse{}, err
 	}

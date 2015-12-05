@@ -5,12 +5,12 @@ import (
 )
 
 type Users struct {
-	*Mandrill
+	m *Mandrill
 }
 
 func (u *Users) Info() (InfoResponse, error) {
 	var ret InfoResponse
-	body, err := u.execute("/users/info.json", simpleRequest{u.APIKey})
+	body, err := u.m.execute("/users/info.json", simpleRequest{u.m.APIKey})
 	if err != nil {
 		return ret, err
 	}
@@ -91,13 +91,13 @@ type UserStat struct {
 
 // Ping checks valid connection to server with given API key
 func (u *Users) Ping() (bool, error) {
-	resp, err := u.execute("/users/ping.json", simpleRequest{u.APIKey})
+	resp, err := u.m.execute("/users/ping.json", simpleRequest{u.m.APIKey})
 	return string(resp) == `"PONG!"`, err
 }
 
 // Return the senders that have tried to use this account, both verified and unverified
 func (u *Users) Senders() ([]Sender, error) {
-	body, err := u.execute("/users/senders.json", simpleRequest{u.APIKey})
+	body, err := u.m.execute("/users/senders.json", simpleRequest{u.m.APIKey})
 	if err != nil {
 		return nil, err
 	}
