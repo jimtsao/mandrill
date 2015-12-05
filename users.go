@@ -8,18 +8,18 @@ type Users struct {
 	*Mandrill
 }
 
-func (u *Users) Info() (*InfoResponse, error) {
+func (u *Users) Info() (InfoResponse, error) {
+	var ret InfoResponse
 	body, err := u.execute("/users/info.json", simpleRequest{u.APIKey})
 	if err != nil {
-		return nil, err
+		return ret, err
 	}
 
-	var ret InfoResponse
 	if err := json.Unmarshal(body, &ret); err != nil {
-		return nil, err
+		return ret, err
 	}
 
-	return &ret, nil
+	return ret, nil
 }
 
 // InfoResponse contains user information including username, key, reputation, quota, and historical sending stats
