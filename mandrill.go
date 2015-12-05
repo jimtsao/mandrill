@@ -123,10 +123,12 @@ func (a *apiError) Error() error {
 	}
 }
 
+// FromMandrillTime returns a time struct in UTC
 func FromMandrillTime(s string) (time.Time, error) {
 	return time.Parse("2006-01-02 15:04:05", s)
 }
 
+// ToMandrillTime converts a time struct to Mandrill specific UTC format
 func ToMandrillTime(t time.Time) string {
 	return t.UTC().Format("2006-01-02 15:04:05")
 }
