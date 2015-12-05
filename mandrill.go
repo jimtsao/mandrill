@@ -100,6 +100,8 @@ var (
 	ErrInvalidKey = errors.New("The provided API key is not a valid Mandrill API key")
 	ErrValidation = errors.New("The parameters passed to the API call are invalid or not provided when required")
 	ErrGeneral    = errors.New("An unexpected error occurred processing the request. Mandrill developers will be notified.")
+	ErrPayment    = errors.New("The requested feature requires payment")
+	ErrSubaccount = errors.New("The provided subaccount id does not exist")
 )
 
 func (a *apiError) Error() error {
@@ -112,6 +114,10 @@ func (a *apiError) Error() error {
 		return ErrValidation
 	case "GeneralError":
 		return ErrGeneral
+	case "PaymentRequired":
+		return ErrPayment
+	case "Unknown_Subaccount":
+		return ErrSubaccount
 	default:
 		return fmt.Errorf("An unknown error response was received from API. %+v", a)
 	}
