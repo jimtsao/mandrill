@@ -2,7 +2,6 @@ package mandrill
 
 import (
 	"crypto/tls"
-	"flag"
 	"fmt"
 	"net/http"
 	"os"
@@ -14,14 +13,10 @@ var TestAPIKey string
 var TestFromEmail string
 
 func TestMain(m *testing.M) {
-	flag.StringVar(&TestAPIKey, "apikey", "", "Valid Mandrill API Key")
-	flag.StringVar(&TestFromEmail, "from", "", "Email address from an SPF + DKIM signed domain")
-	flag.Parse()
-	if TestAPIKey == "" {
-		fmt.Fprint(os.Stdout, `Please set -apikey="XYZ" flag`)
-		os.Exit(1)
-	} else if TestFromEmail == "" {
-		fmt.Fprint(os.Stdout, `Please set -from="example@domain.com" flag`)
+	TestAPIKey = os.Getenv("MANDRILL_TEST_API_KEY")
+	TestFromEmail = os.Getenv("MANDRILL_TEST_FROM_EMAIL")
+	if TestAPIKey == "" || TestFromEmail == "" {
+		fmt.Println("Please set all ENV variables MANDRILL_TEST_API_KEY, MANDRILL_TEST_FROM_EMAIL")
 		os.Exit(1)
 	}
 	os.Exit(m.Run())
