@@ -1,2 +1,18 @@
-# mandrill
-Go API for Mandrill Email Service
+# Mandrill [![Build Status](https://travis-ci.org/jimtsao/mandrill.svg)](https://travis-ci.org/jimtsao/mandrill)
+Mandrill is a Go(lang) API for Mandrill Email Service
+
+# Import
+    import "github.com/jimtsao/mandrill"
+
+# Instructions
+    m := mandrill.NewMandrill("your-api-key")
+    resp, err := m.Messages().SimpleSend("from@email.com", "to@email.com", "subject", "body")
+    if err != nil {
+        switch err {
+        case mandrill.ErrInvalidKey:
+        case mandrill.ErrValidation:
+        ...
+        default:
+        }
+    }
+    
