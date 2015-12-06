@@ -154,3 +154,7 @@ func (m *Mandrill) Tags() *Tags {
 func (m *Mandrill) Rejects() *Rejects {
 	return &Rejects{m}
 }
+
+func (m *Mandrill) Whitelists() *Whitelists {
+	return &Whitelists{m}
+}
