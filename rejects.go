@@ -126,7 +126,7 @@ type rejectsListResponse struct {
 	Subaccount string `json:"subaccount"`
 
 	// the sender that this blacklist entry applies to, or null if none
-	Sender struct {
+	Sender *struct {
 		// the sender's email address
 		Address string `json:"address"`
 
@@ -163,5 +163,5 @@ type rejectsListResponse struct {
 
 		// the number of unique clicks for emails sent for this sender
 		UniqueClicks int `json:"unique_clicks"`
-	} `json:"sender"`
+	} `json:"sender, omitempty"`
 }
