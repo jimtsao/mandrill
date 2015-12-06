@@ -52,8 +52,12 @@ func TestSendMessageReject(t *testing.T) {
 
 func TestSimpleSend(t *testing.T) {
 	m := NewMandrill(TestAPIKey)
-	r, err := m.Messages().SimpleSend("devnull@test.mandrillapp.com", TestFromEmail, "Simple Send", "Simple Send Body")
-	if err != nil {
+	if r, err := m.Messages().SimpleSend(TestFromEmail,
+		"devnull@test.mandrillapp.com",
+		"Simple Send",
+		"Simple Send Body"); err != nil {
 		t.Errorf("Expected sent response. Response: %+v. Error: %s", r, err)
+	} else if r.Status == "rejected" {
+		t.Errorf("failed to send. Response: %+v", r)
 	}
 }
