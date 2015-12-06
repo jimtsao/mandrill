@@ -12,16 +12,19 @@ func TestRejects(t *testing.T) {
 		t.Error(err)
 		return
 	} else if resp.Email != e || !resp.Added {
-		t.Errorf("failed to add blacklisted email. Response: %s", resp)
+		t.Errorf("failed to add blacklisted email. Response: %+v", resp)
 		return
 	}
 
 	// list blacklisted emails
-	if resp, err := m.Rejects().List("", true, ""); err != nil {
+	if resp, err := m.Rejects().List(e, true, ""); err != nil {
 		t.Error(err)
 		return
-	} else if len(resp) == 0 {
+	} else if len(resp) < 1 {
 		t.Error("failed to retrieve any blacklisted email")
+		return
+	} else if resp[0].Email != e || resp[0].Detail != "test reject" {
+		t.Errorf("failed to retrieve blacklisted email. Response: %+v", resp)
 		return
 	}
 
@@ -30,7 +33,7 @@ func TestRejects(t *testing.T) {
 		t.Error(err)
 		return
 	} else if resp.Email != e || !resp.Deleted {
-		t.Errorf("failed to delete blacklisted email. Response: %s", resp)
+		t.Errorf("failed to delete blacklisted email. Response: %+v", resp)
 		return
 	}
 }
