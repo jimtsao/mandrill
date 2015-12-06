@@ -104,6 +104,7 @@ var (
 	ErrSubaccount         = errors.New("The provided subaccount id does not exist")
 	ErrInvalidTagName     = errors.New("The requested tag does not exist or contains invalid characters")
 	ErrServiceUnavailable = errors.New("The subsystem providing this API call is down for maintenance")
+	ErrUnknownSender      = errors.New("The requested sender does not exist")
 )
 
 func (a *apiError) Error() error {
@@ -124,6 +125,8 @@ func (a *apiError) Error() error {
 		return ErrInvalidTagName
 	case "ServiceUnavailable":
 		return ErrServiceUnavailable
+	case "Unknown_Sender":
+		return ErrUnknownSender
 	default:
 		return fmt.Errorf("An unknown error response was received from API. %+v", a)
 	}
@@ -157,4 +160,8 @@ func (m *Mandrill) Rejects() *Rejects {
 
 func (m *Mandrill) Whitelists() *Whitelists {
 	return &Whitelists{m}
+}
+
+func (m *Mandrill) Senders() *Senders {
+	return &Senders{m}
 }
