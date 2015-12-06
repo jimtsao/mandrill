@@ -97,12 +97,13 @@ type apiError struct {
 }
 
 var (
-	ErrInvalidKey     = errors.New("The provided API key is not a valid Mandrill API key")
-	ErrValidation     = errors.New("The parameters passed to the API call are invalid or not provided when required")
-	ErrGeneral        = errors.New("An unexpected error occurred processing the request. Mandrill developers will be notified.")
-	ErrPayment        = errors.New("The requested feature requires payment")
-	ErrSubaccount     = errors.New("The provided subaccount id does not exist")
-	ErrInvalidTagName = errors.New("The requested tag does not exist or contains invalid characters")
+	ErrInvalidKey         = errors.New("The provided API key is not a valid Mandrill API key")
+	ErrValidation         = errors.New("The parameters passed to the API call are invalid or not provided when required")
+	ErrGeneral            = errors.New("An unexpected error occurred processing the request. Mandrill developers will be notified.")
+	ErrPayment            = errors.New("The requested feature requires payment")
+	ErrSubaccount         = errors.New("The provided subaccount id does not exist")
+	ErrInvalidTagName     = errors.New("The requested tag does not exist or contains invalid characters")
+	ErrServiceUnavailable = errors.New("The subsystem providing this API call is down for maintenance")
 )
 
 func (a *apiError) Error() error {
@@ -121,6 +122,8 @@ func (a *apiError) Error() error {
 		return ErrSubaccount
 	case "Invalid_Tag_Name":
 		return ErrInvalidTagName
+	case "ServiceUnavailable":
+		return ErrServiceUnavailable
 	default:
 		return fmt.Errorf("An unknown error response was received from API. %+v", a)
 	}
@@ -146,4 +149,8 @@ func (m *Mandrill) Messages() *Messages {
 
 func (m *Mandrill) Tags() *Tags {
 	return &Tags{m}
+}
+
+func (m *Mandrill) Rejects() *Rejects {
+	return &Rejects{m}
 }
