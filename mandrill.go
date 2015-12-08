@@ -82,18 +82,20 @@ func (m *Mandrill) execute(path string, obj interface{}) ([]byte, error) {
 		}
 	}
 
-	// check if error response
+	// check if it is an error response
 	var errResponse apiError
-	json.Unmarshal(respB, &errResponse)
+	if err = json.Unmarshal(respB, &errResponse); err == nil {
+		return nil, errResponse.Error()
+	}
 
-	return respB, errResponse.Error()
+	return respB, nil
 }
 
 type apiError struct {
-	Status  string `json:"status"`
-	Code    int    `json:"code"`
-	Name    string `json:"name"`
-	Message string `json:"message"`
+	Status  string
+	Code    int
+	Name    string
+	Message string
 }
 
 var (
@@ -107,12 +109,43 @@ var (
 	ErrUnknownSender         = errors.New("The requested sender does not exist")
 	ErrUnknownURL            = errors.New("The requested URL has not been seen in a tracked link")
 	ErrUnknownTrackingDomain = errors.New("The provided tracking domain does not exist")
+	ErrInvalidTemplate       = errors.New("The given template name already exists or contains invalid characters")
 )
+
+func (a *apiError) UnmarshalJSON(data []byte) error {
+	var m map[string]interface{}
+	err := json.Unmarshal(data, &m)
+	if err != nil {
+		return errors.New("not an api error")
+	}
+
+	val1, ok1 := m["status"]
+	val2, ok2 := m["code"]
+	val3, ok3 := m["name"]
+	val4, ok4 := m["message"]
+	if len(m) != 4 || !ok1 || !ok2 || !ok3 || !ok4 {
+		return errors.New("not an api error")
+	}
+
+	status, ok5 := val1.(string)
+	code, ok6 := val2.(float64)
+	name, ok7 := val3.(string)
+	message, ok8 := val4.(string)
+
+	if !ok5 || !ok6 || !ok7 || !ok8 {
+		return errors.New("not an api error")
+	}
+
+	a.Status = status
+	a.Code = int(code)
+	a.Name = name
+	a.Message = message
+
+	return nil
+}
 
 func (a *apiError) Error() error {
 	switch a.Name {
-	case "":
-		return nil
 	case "Invalid_Key":
 		return ErrInvalidKey
 	case "ValidationError":
@@ -133,6 +166,8 @@ func (a *apiError) Error() error {
 		return ErrUnknownURL
 	case "Unknown_TrackingDomain":
 		return ErrUnknownTrackingDomain
+	case "Invalid_Template":
+		return ErrInvalidTemplate
 	default:
 		return fmt.Errorf("An unknown error response was received from API. %+v", a)
 	}
@@ -174,4 +209,8 @@ func (m *Mandrill) Senders() *Senders {
 
 func (m *Mandrill) URLs() *URLs {
 	return &URLs{m}
+}
+
+func (m *Mandrill) Templates() *Templates {
+	return &Templates{m}
 }
