@@ -97,14 +97,16 @@ type apiError struct {
 }
 
 var (
-	ErrInvalidKey         = errors.New("The provided API key is not a valid Mandrill API key")
-	ErrValidation         = errors.New("The parameters passed to the API call are invalid or not provided when required")
-	ErrGeneral            = errors.New("An unexpected error occurred processing the request. Mandrill developers will be notified.")
-	ErrPayment            = errors.New("The requested feature requires payment")
-	ErrSubaccount         = errors.New("The provided subaccount id does not exist")
-	ErrInvalidTagName     = errors.New("The requested tag does not exist or contains invalid characters")
-	ErrServiceUnavailable = errors.New("The subsystem providing this API call is down for maintenance")
-	ErrUnknownSender      = errors.New("The requested sender does not exist")
+	ErrInvalidKey            = errors.New("The provided API key is not a valid Mandrill API key")
+	ErrValidation            = errors.New("The parameters passed to the API call are invalid or not provided when required")
+	ErrGeneral               = errors.New("An unexpected error occurred processing the request. Mandrill developers will be notified.")
+	ErrPayment               = errors.New("The requested feature requires payment")
+	ErrSubaccount            = errors.New("The provided subaccount id does not exist")
+	ErrInvalidTagName        = errors.New("The requested tag does not exist or contains invalid characters")
+	ErrServiceUnavailable    = errors.New("The subsystem providing this API call is down for maintenance")
+	ErrUnknownSender         = errors.New("The requested sender does not exist")
+	ErrUnknownURL            = errors.New("The requested URL has not been seen in a tracked link")
+	ErrUnknownTrackingDomain = errors.New("The provided tracking domain does not exist")
 )
 
 func (a *apiError) Error() error {
@@ -127,6 +129,10 @@ func (a *apiError) Error() error {
 		return ErrServiceUnavailable
 	case "Unknown_Sender":
 		return ErrUnknownSender
+	case "Unknown_Url":
+		return ErrUnknownURL
+	case "Unknown_TrackingDomain":
+		return ErrUnknownTrackingDomain
 	default:
 		return fmt.Errorf("An unknown error response was received from API. %+v", a)
 	}
@@ -164,4 +170,8 @@ func (m *Mandrill) Whitelists() *Whitelists {
 
 func (m *Mandrill) Senders() *Senders {
 	return &Senders{m}
+}
+
+func (m *Mandrill) URLs() *URLs {
+	return &URLs{m}
 }
