@@ -144,3 +144,7 @@ func (m *Mandrill) Webhooks() *Webhooks {
 func (m *Mandrill) Subaccounts() *Subaccounts {
 	return &Subaccounts{m}
 }
+
+func (m *Mandrill) Inbound() *Inbound {
+	return &Inbound{m}
+}
