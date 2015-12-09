@@ -140,3 +140,7 @@ func (m *Mandrill) Templates() *Templates {
 func (m *Mandrill) Webhooks() *Webhooks {
 	return &Webhooks{m}
 }
+
+func (m *Mandrill) Subaccounts() *Subaccounts {
+	return &Subaccounts{m}
+}
