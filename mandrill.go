@@ -148,3 +148,7 @@ func (m *Mandrill) Subaccounts() *Subaccounts {
 func (m *Mandrill) Inbound() *Inbound {
 	return &Inbound{m}
 }
+
+func (m *Mandrill) Exports() *Exports {
+	return &Exports{m}
+}
