@@ -83,3 +83,11 @@ func TestErrUnknownWebhook(t *testing.T) {
 		t.Error("expected unknown webhook error. Received: %s", err)
 	}
 }
+
+func TestErrUnknownRoute(t *testing.T) {
+	m := NewMandrill(TestAPIKey)
+	_, err := m.Inbound().UpdateRoute("51521-test-bad-route", "", "")
+	if ae, ok := err.(*APIError); !ok || ae.Name != "Unknown_InboundRoute" {
+		t.Error("expected unknown inbound route error. Received: %s", err)
+	}
+}
