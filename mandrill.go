@@ -136,3 +136,7 @@ func (m *Mandrill) URLs() *URLs {
 func (m *Mandrill) Templates() *Templates {
 	return &Templates{m}
 }
+
+func (m *Mandrill) Webhooks() *Webhooks {
+	return &Webhooks{m}
+}
