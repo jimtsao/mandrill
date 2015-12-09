@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-const APIBaseURL = "https://mandrillapp.com/api/1.0/"
+const APIBaseURL = "https://mandrillapp.com/api/1.0"
 
 type Mandrill struct {
 	APIKey     string
