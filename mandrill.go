@@ -82,10 +82,14 @@ func (m *Mandrill) execute(path string, obj interface{}) ([]byte, error) {
 		}
 	}
 
-	// check if it is an error response
-	var errResponse apiError
-	if err = json.Unmarshal(respB, &errResponse); err == nil {
-		return nil, errResponse.Error()
+	// any non 200 is error
+	if resp.StatusCode != http.StatusOK {
+		var errResponse apiError
+		if err = json.Unmarshal(respB, &errResponse); err != nil {
+			return nil, fmt.Errorf("failed to interpret api error. Error Response: %s", err)
+		} else {
+			return nil, errResponse.Error()
+		}
 	}
 
 	return respB, nil
@@ -111,38 +115,6 @@ var (
 	ErrUnknownTrackingDomain = errors.New("The provided tracking domain does not exist")
 	ErrInvalidTemplate       = errors.New("The given template name already exists or contains invalid characters")
 )
-
-func (a *apiError) UnmarshalJSON(data []byte) error {
-	var m map[string]interface{}
-	err := json.Unmarshal(data, &m)
-	if err != nil {
-		return errors.New("not an api error")
-	}
-
-	val1, ok1 := m["status"]
-	val2, ok2 := m["code"]
-	val3, ok3 := m["name"]
-	val4, ok4 := m["message"]
-	if len(m) != 4 || !ok1 || !ok2 || !ok3 || !ok4 {
-		return errors.New("not an api error")
-	}
-
-	status, ok5 := val1.(string)
-	code, ok6 := val2.(float64)
-	name, ok7 := val3.(string)
-	message, ok8 := val4.(string)
-
-	if !ok5 || !ok6 || !ok7 || !ok8 {
-		return errors.New("not an api error")
-	}
-
-	a.Status = status
-	a.Code = int(code)
-	a.Name = name
-	a.Message = message
-
-	return nil
-}
 
 func (a *apiError) Error() error {
 	switch a.Name {
