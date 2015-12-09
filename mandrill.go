@@ -84,11 +84,11 @@ func (m *Mandrill) execute(path string, obj interface{}) ([]byte, error) {
 
 	// any non 200 is error
 	if resp.StatusCode != http.StatusOK {
-		var errResponse apiError
+		var errResponse *APIError
 		if err = json.Unmarshal(respB, &errResponse); err != nil {
 			return nil, fmt.Errorf("failed to interpret api error. Error Response: %s", err)
 		} else {
-			return nil, errResponse.Error()
+			return nil, errResponse
 		}
 	}
 
