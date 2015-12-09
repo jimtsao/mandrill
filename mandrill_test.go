@@ -31,24 +31,6 @@ func TestTLS(t *testing.T) {
 	}
 }
 
-func TestErrInvalidKey(t *testing.T) {
-	m := NewMandrill("dummy-key")
-	_, err := m.Users().Ping()
-	if err != ErrInvalidKey {
-		t.Errorf("expected invalid api key response. %s", err)
-	}
-}
-
-func TestErrValidation(t *testing.T) {
-	m := NewMandrill(TestAPIKey)
-	_, err := m.execute("/users/ping.json", struct {
-		BadKey string `json:"bad-key"`
-	}{"bad-key"})
-	if err != ErrValidation {
-		t.Errorf("expected validation error response. %s", err)
-	}
-}
-
 func TestFromMandrillTime(t *testing.T) {
 	t1, err := FromMandrillTime("2015-12-04 12:15:30")
 	t1 = t1.UTC()
