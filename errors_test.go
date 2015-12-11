@@ -31,7 +31,7 @@ func TestErrUnknownSubaccount(t *testing.T) {
 	}
 	_, err := m.Messages().Send(msg, false, "", nil)
 	if ae, ok := err.(*APIError); !ok || ae.Name != "Unknown_Subaccount" {
-		t.Error("expected unknown subaccount error. Received: %s", err)
+		t.Errorf("expected unknown subaccount error. Received: %s", err)
 	}
 
 }
@@ -40,7 +40,7 @@ func TestErrInvalidTag(t *testing.T) {
 	m := NewMandrill(TestAPIKey)
 	_, err := m.Tags().Info("5219351-test-tag")
 	if ae, ok := err.(*APIError); !ok || ae.Name != "Invalid_Tag_Name" {
-		t.Error("expected invalid tag error. Received: %s", err)
+		t.Errorf("expected invalid tag error. Received: %s", err)
 	}
 }
 
@@ -48,7 +48,7 @@ func TestErrUnknownSender(t *testing.T) {
 	m := NewMandrill(TestAPIKey)
 	_, err := m.Senders().Info("bad@sender.test")
 	if ae, ok := err.(*APIError); !ok || ae.Name != "Unknown_Sender" {
-		t.Error("expected unknown sender error. Received: %s", err)
+		t.Errorf("expected unknown sender error. Received: %s", err)
 	}
 }
 
@@ -56,7 +56,7 @@ func TestErrUnknownURL(t *testing.T) {
 	m := NewMandrill(TestAPIKey)
 	_, err := m.URLs().TimeSeries("bad-test-url")
 	if ae, ok := err.(*APIError); !ok || ae.Name != "Unknown_Url" {
-		t.Error("expected unknown url error. Received: %s", err)
+		t.Errorf("expected unknown url error. Received: %s", err)
 	}
 }
 
@@ -64,7 +64,7 @@ func TestErrUnknownTrackingDomain(t *testing.T) {
 	m := NewMandrill(TestAPIKey)
 	_, err := m.URLs().CheckTrackingDomain("bad-test-domain")
 	if ae, ok := err.(*APIError); !ok || ae.Name != "Unknown_TrackingDomain" {
-		t.Error("expected unknown tracking domain error. Received: %s", err)
+		t.Errorf("expected unknown tracking domain error. Received: %s", err)
 	}
 }
 
@@ -72,7 +72,7 @@ func TestErrInvalidTemplate(t *testing.T) {
 	m := NewMandrill(TestAPIKey)
 	_, err := m.Templates().Info("521521-bad-test-template")
 	if ae, ok := err.(*APIError); !ok || ae.Name != "Unknown_Template" {
-		t.Error("expected unknown template error. Received: %s", err)
+		t.Errorf("expected unknown template error. Received: %s", err)
 	}
 }
 
@@ -80,7 +80,7 @@ func TestErrUnknownWebhook(t *testing.T) {
 	m := NewMandrill(TestAPIKey)
 	_, err := m.Webhooks().Info(5210129)
 	if ae, ok := err.(*APIError); !ok || ae.Name != "Unknown_Webhook" {
-		t.Error("expected unknown webhook error. Received: %s", err)
+		t.Errorf("expected unknown webhook error. Received: %s", err)
 	}
 }
 
@@ -88,6 +88,22 @@ func TestErrUnknownRoute(t *testing.T) {
 	m := NewMandrill(TestAPIKey)
 	_, err := m.Inbound().UpdateRoute("51521-test-bad-route", "", "")
 	if ae, ok := err.(*APIError); !ok || ae.Name != "Unknown_InboundRoute" {
-		t.Error("expected unknown inbound route error. Received: %s", err)
+		t.Errorf("expected unknown inbound route error. Received: %s", err)
+	}
+}
+
+func TestErrUnknownPool(t *testing.T) {
+	m := NewMandrill(TestAPIKey)
+	_, err := m.IPs().PoolInfo("test-bad-pool")
+	if ae, ok := err.(*APIError); !ok || ae.Name != "Unknown_Pool" {
+		t.Errorf("expected unknown pool error. Received: %s", err)
+	}
+}
+
+func TestErrUnknownIP(t *testing.T) {
+	m := NewMandrill(TestAPIKey)
+	_, err := m.IPs().Info("test-bad-ip")
+	if ae, ok := err.(*APIError); !ok || ae.Name != "Unknown_IP" {
+		t.Errorf("expected unknown ip error. Received: %s", err)
 	}
 }
