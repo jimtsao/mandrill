@@ -107,3 +107,11 @@ func TestErrUnknownIP(t *testing.T) {
 		t.Errorf("expected unknown ip error. Received: %s", err)
 	}
 }
+
+func TestErrUnknownMetadataField(t *testing.T) {
+	m := NewMandrill(TestAPIKey)
+	_, err := m.Metadata().Delete("test-bad-metadata-field")
+	if ae, ok := err.(*APIError); !ok || ae.Name != "Unknown_MetadataField" {
+		t.Errorf("expected unknown metadata field name. Received %s", err)
+	}
+}
