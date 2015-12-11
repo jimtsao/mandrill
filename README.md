@@ -36,6 +36,18 @@ Call a function associated with that domain
 		// handle error
 	}
 
+Type assert error for more details
+
+	if ae, ok := err.(*APIError); ok {
+		switch ae.Name {
+		case "Invalid_Key":
+		case "ValidationError":
+		...
+		default:
+		}
+	}
+
+
 ### Testing
 Set environmental variables:
 

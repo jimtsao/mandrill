@@ -59,4 +59,13 @@ func TestReadmeExamples(t *testing.T) {
 		t.Error(err)
 		return
 	}
+
+	if ae, ok := err.(*APIError); ok {
+		switch ae.Name {
+		case "Invalid_Key":
+		case "ValidationError":
+		// ...
+		default:
+		}
+	}
 }
