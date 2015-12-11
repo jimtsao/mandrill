@@ -152,3 +152,7 @@ func (m *Mandrill) Inbound() *Inbound {
 func (m *Mandrill) Exports() *Exports {
 	return &Exports{m}
 }
+
+func (m *Mandrill) IPs() *IPs {
+	return &IPs{m}
+}
