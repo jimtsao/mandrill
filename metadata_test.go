@@ -14,10 +14,12 @@ func TestMetadataList(t *testing.T) {
 func TestMetadataLifecycle(t *testing.T) {
 	m := NewMandrill(TestAPIKey)
 	name := "test-metadata"
-	m.Metadata().Delete(name)
 	if _, err := m.Metadata().Add(name, ""); err != nil {
-		t.Errorf("failed to add metadata. %s", err)
-		return
+		// there is delay in metadata handling, returns validation error if exists
+		if ae, ok := err.(*APIError); !ok || ae.Name != "ValidationError" {
+			t.Errorf("failed to add metadata. %s", err)
+			return
+		}
 	}
 
 	if _, err := m.Metadata().Update(name, "view template update"); err != nil {
