@@ -156,3 +156,7 @@ func (m *Mandrill) Exports() *Exports {
 func (m *Mandrill) IPs() *IPs {
 	return &IPs{m}
 }
+
+func (m *Mandrill) Metadata() *Metadata {
+	return &Metadata{m}
+}
