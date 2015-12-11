@@ -1,9 +1,7 @@
 package mandrill
 
 import (
-	"crypto/tls"
 	"fmt"
-	"net/http"
 	"os"
 	"testing"
 	"time"
@@ -20,15 +18,6 @@ func TestMain(m *testing.M) {
 		os.Exit(1)
 	}
 	os.Exit(m.Run())
-}
-
-func TestTLS(t *testing.T) {
-	m := NewMandrill(TestAPIKey)
-	tr := &http.Transport{TLSClientConfig: &tls.Config{}}
-	m.HttpClient = &http.Client{Transport: tr}
-	if ok, err := m.Users().Ping(); !ok || err != nil {
-		t.Errorf("could not ping server through https connection")
-	}
 }
 
 func TestFromMandrillTime(t *testing.T) {
