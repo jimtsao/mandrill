@@ -33,8 +33,7 @@ Call a function associated with that domain
 	}
 	response, err := m.Messages().Send(msg, false, "", nil)
 	if err != nil {
-		t.Error(err)
-		return
+		// handle error
 	}
 
 ### Testing
