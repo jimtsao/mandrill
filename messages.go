@@ -2,7 +2,6 @@ package mandrill
 
 import (
 	"encoding/json"
-	"fmt"
 	"time"
 )
 
@@ -44,33 +43,6 @@ func (m *Messages) Send(message *Message, async bool, ipPool string, sendAt *tim
 	}
 
 	return ret, nil
-}
-
-func (m *Messages) SimpleSend(from string, to string, subject string, body string) (SendResponse, error) {
-	msg := &Message{
-		FromEmail: from,
-		To:        []Recipient{{Email: to}},
-		Subject:   subject,
-		Text:      body,
-	}
-	data := struct {
-		APIKey  string   `json:"key"`
-		Message *Message `json:"message"`
-	}{m.m.APIKey, msg}
-	resp, err := m.m.execute("/messages/send.json", data)
-	if err != nil {
-		return SendResponse{}, err
-	}
-
-	var ret []SendResponse
-	err = json.Unmarshal(resp, &ret)
-	if err != nil {
-		return SendResponse{}, err
-	} else if len(ret) != 1 {
-		return SendResponse{}, fmt.Errorf("received more than one response: %+v", ret)
-	}
-
-	return ret[0], nil
 }
 
 type SendResponse struct {
