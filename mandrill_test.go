@@ -41,3 +41,22 @@ func TestToMandrillTime(t *testing.T) {
 		t.Errorf("expected time 4 December 2015 17:15:30, got: %s", t1)
 	}
 }
+
+func TestReadmeExamples(t *testing.T) {
+	m := NewMandrill(TestAPIKey)
+	msg := &Message{
+		FromName:  "John Doe",
+		FromEmail: TestFromEmail,
+		To: []Recipient{
+			{"jane@example.com", "Jane Doe", "to"},
+			{"jessica@example.com", "Jessica Doe", "cc"},
+		},
+		Subject: "Confirmation of Membership",
+		Text:    "Congratulations on becoming a member.",
+	}
+	_, err := m.Messages().Send(msg, false, "", nil)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+}
