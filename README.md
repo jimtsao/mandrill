@@ -1,7 +1,7 @@
 # Mandrill [![Build Status](https://travis-ci.org/jimtsao/mandrill.svg)](https://travis-ci.org/jimtsao/mandrill)
 Mandrill is a Go API for Mandrill Email Service
 
-It supports all API calls (users, messages, tags, whitelists webhooks etc). The code is written to be as similar as possible to official SDKs. Multiple API keys can be used concurrently.
+It supports all API calls (users, messages, tags, whitelists webhooks etc). The code is written to be as similar as possible to official libraries. Multiple API keys can be used concurrently.
 
 ### Import
     import "github.com/jimtsao/mandrill"
